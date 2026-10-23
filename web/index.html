@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>MOLT Forge — honest repo investigation</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <header>
+    <h1>MOLT Forge</h1>
+    <p class="tagline">Every claim backed by execution evidence. Verdicts: validated · proposed-unverified · diagnosis-only · documented-failure</p>
+  </header>
+
+  <section id="submit-panel">
+    <input id="repo-url" type="text" placeholder="public git URL or local path, e.g. tests/fixtures/sample_repo">
+    <button id="go">Investigate</button>
+  </section>
+
+  <main id="job-panel" hidden>
+    <div id="left">
+      <h2>Progress</h2>
+      <ul id="steps"></ul>
+      <h2>Verdict</h2>
+      <div id="verdict" class="verdict">pending…</div>
+      <a id="download" href="#" hidden><button>Download evidence package (.zip)</button></a>
+      <h2>Evidence inspector</h2>
+      <div id="manifest"></div>
+      <h2>Patch</h2>
+      <pre id="diff" class="diff">(no patch yet)</pre>
+    </div>
+    <div id="right">
+      <h2>Investigation map</h2>
+      <canvas id="globe"></canvas>
+      <div id="node-detail" class="node-detail">click a node for evidence</div>
+    </div>
+  </main>
+
+  <script src="/vendor/three.min.js"></script>
+  <script src="/globe.js"></script>
+  <script src="/app.js"></script>
+</body>
+</html>
