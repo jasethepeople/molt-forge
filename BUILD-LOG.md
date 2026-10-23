@@ -115,3 +115,17 @@ Drill artifacts: `~/workspace/drill_jobs/drill1/` (package is downloadable proof
 - AetherState E2E mutation→persistence round trip (Day-2 test, not a scope blocker).
 - `demo.sh` still defaults its jobs dir to /tmp on the build copy — fix before
   any machine with a small /tmp matters.
+
+## Web polish adoption (2026-10-23)
+- External polish pass audited + adopted: 3D globe (globe.js + vendored
+  three.min.js) removed; web/graph.js findings-list UI renders every graph
+  node kind (repo/module/finding/artifact/agent) with a fallback group.
+- /api/jobs/<id>/package-file endpoint added (traversal-guarded); the web
+  client now actually fetches patch.diff through it (the old stub was dead).
+- Fixture bootstrap: conftest.py and demo.sh git-init
+  tests/fixtures/sample_repo when its .git is missing (a fresh clone of
+  this repo never ships the nested .git). Idempotent.
+- demo.sh now calls python3 (bare `python` is absent on python3-only hosts).
+- Verified cold from the polish tree before adopting: pytest 26/26,
+  demo.sh verdict "validated", hash chain + manifest OK; core engine
+  files byte-identical to the pre-polish tree.

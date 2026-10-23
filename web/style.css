@@ -1,44 +1,320 @@
+/* ---------------------------------------------------------------------
+   MOLT Forge — evidence dossier
+   The subject is a signed, hash-chained chain of custody for a code
+   repair. The design follows that: a letterhead, a ledger, a stamp.
+   --------------------------------------------------------------------- */
+
+:root {
+  --ink: #121214;
+  --panel: #1b1b1e;
+  --rule: #2c2c30;
+  --bone: #e6e2d8;
+  --slate: #86837c;
+  --brass: #b08d45;
+  --brass-dim: #8a6f38;
+
+  --validated: #5c8a5c;
+  --proposed: #b08d45;
+  --diagnosis: #8678a0;
+  --failure: #a14b3b;
+
+  --serif: "Newsreader", "Iowan Old Style", Georgia, serif;
+  --sans: "IBM Plex Sans", system-ui, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+}
+
+* { box-sizing: border-box; }
+
 body {
-  background: #14171d;
-  color: #c6ccd6;
-  font-family: "Segoe UI", system-ui, sans-serif;
+  background: var(--ink);
+  color: var(--bone);
+  font-family: var(--sans);
   margin: 0;
+  -webkit-font-smoothing: antialiased;
 }
-header { padding: 1.2rem 2rem; border-bottom: 1px solid #262c38; }
-h1 { margin: 0; font-weight: 600; color: #8fa8c8; letter-spacing: 0.05em; }
-.tagline { color: #6b7482; font-size: 0.85rem; margin: 0.3rem 0 0; }
-#submit-panel { padding: 1rem 2rem; display: flex; gap: 0.6rem; }
+
+a { color: var(--brass); }
+
+:focus-visible {
+  outline: 2px solid var(--brass);
+  outline-offset: 2px;
+}
+
+/* ---------- letterhead ---------- */
+
+header {
+  padding: 2.4rem 2.5rem 1.4rem;
+  border-bottom: 1px solid var(--rule);
+}
+
+h1 {
+  margin: 0;
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: 2.1rem;
+  color: var(--bone);
+  letter-spacing: 0.01em;
+}
+
+.tagline {
+  font-family: var(--serif);
+  font-style: italic;
+  color: var(--slate);
+  font-size: 1rem;
+  margin: 0.5rem 0 0;
+  max-width: 46ch;
+}
+
+/* ---------- case intake ---------- */
+
+#submit-panel {
+  padding: 1.4rem 2.5rem;
+  display: flex;
+  gap: 0;
+  border-bottom: 1px solid var(--rule);
+  align-items: stretch;
+}
+
 #repo-url {
-  flex: 1; background: #1b1f27; border: 1px solid #333c4c; color: #c6ccd6;
-  padding: 0.55rem 0.8rem; border-radius: 4px;
+  flex: 1;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--rule);
+  color: var(--bone);
+  font-family: var(--mono);
+  font-size: 0.92rem;
+  padding: 0.6rem 0.2rem;
+  border-radius: 0;
 }
+
+#repo-url:focus {
+  outline: none;
+  border-bottom-color: var(--brass);
+}
+
+#repo-url::placeholder { color: var(--slate); }
+
 button {
-  background: #2c3a4e; color: #c6ccd6; border: 1px solid #3d4c63;
-  padding: 0.55rem 1.2rem; border-radius: 4px; cursor: pointer;
+  background: var(--brass);
+  color: var(--ink);
+  border: 1px solid var(--brass);
+  font-family: var(--sans);
+  font-weight: 600;
+  font-size: 0.88rem;
+  padding: 0 1.4rem;
+  margin-left: 1rem;
+  border-radius: 0;
+  cursor: pointer;
+  transition: background 120ms ease;
 }
-button:hover { background: #36465e; }
-main { display: flex; gap: 1.5rem; padding: 1rem 2rem; }
-#left { flex: 1; min-width: 0; }
-#right { flex: 1; }
-h2 { font-size: 0.95rem; color: #8fa8c8; border-bottom: 1px solid #262c38; padding-bottom: 0.3rem; }
-#steps { list-style: none; padding: 0; font-size: 0.85rem; }
-#steps li { padding: 0.2rem 0; color: #6b7482; }
-#steps li.done { color: #7fa37f; }
-.verdict { font-size: 1.2rem; font-weight: 600; padding: 0.5rem; border-radius: 4px; background: #1b1f27; }
-.verdict.validated { color: #7fa37f; }
-.verdict.proposed-unverified { color: #c8a05a; }
-.verdict.diagnosis-only { color: #9a7fb8; }
-.verdict.documented-failure { color: #b86a6a; }
+
+button:hover { background: var(--brass-dim); }
+
+#download button {
+  background: transparent;
+  color: var(--brass);
+  border: 1px solid var(--brass-dim);
+  margin-left: 0;
+  padding: 0.55rem 1.2rem;
+}
+#download button:hover { background: rgba(176, 141, 69, 0.1); }
+
+/* ---------- case id ---------- */
+
+#case-id {
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  color: var(--slate);
+  padding: 0.9rem 2.5rem 0;
+  letter-spacing: 0.02em;
+}
+#case-id span { color: var(--brass); }
+
+/* ---------- record ---------- */
+
+main {
+  display: flex;
+  gap: 3rem;
+  padding: 1.6rem 2.5rem 3rem;
+  align-items: flex-start;
+}
+
+#left { flex: 1.1; min-width: 0; }
+#right { flex: 1; position: sticky; top: 1.6rem; }
+
+h2 {
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: 1.05rem;
+  color: var(--bone);
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: 0.4rem;
+  margin: 2rem 0 0.8rem;
+}
+h2:first-child { margin-top: 0; }
+
+#steps {
+  list-style: decimal;
+  padding-left: 1.3rem;
+  margin: 0;
+  font-size: 0.88rem;
+}
+#steps li {
+  padding: 0.3rem 0;
+  color: var(--slate);
+}
+#steps li.done { color: var(--bone); }
+#steps li.done::marker { color: var(--brass); }
+
+/* ---------- verdict stamp ---------- */
+
+.verdict-block {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.6rem;
+  flex-wrap: wrap;
+}
+
+.verdict {
+  font-family: var(--serif);
+  font-weight: 700;
+  font-size: 1.15rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 0.65rem 1.3rem;
+  border: 2px solid var(--slate);
+  color: var(--slate);
+  display: inline-block;
+  transform: rotate(-1.5deg);
+  white-space: nowrap;
+}
+
+.verdict.running {
+  border-style: dashed;
+  text-transform: none;
+  letter-spacing: 0;
+  font-weight: 500;
+  font-size: 0.95rem;
+  transform: none;
+}
+
+.verdict.validated  { color: var(--validated);  border-color: var(--validated); }
+.verdict.proposed-unverified { color: var(--proposed);  border-color: var(--proposed); }
+.verdict.diagnosis-only      { color: var(--diagnosis); border-color: var(--diagnosis); }
+.verdict.documented-failure  { color: var(--failure);   border-color: var(--failure); }
+
+.verdict.stamped {
+  animation: stamp-down 420ms cubic-bezier(.2, 1.4, .4, 1) both;
+}
+@keyframes stamp-down {
+  0%   { transform: rotate(-1.5deg) scale(2.1); opacity: 0; }
+  60%  { transform: rotate(-1.5deg) scale(0.96); opacity: 1; }
+  100% { transform: rotate(-1.5deg) scale(1); opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .verdict.stamped { animation: none; }
+}
+
+.legend {
+  font-size: 0.78rem;
+  color: var(--slate);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  flex: 1;
+  min-width: 220px;
+}
+.legend li { padding: 0.15rem 0; }
+.legend b { color: var(--bone); font-weight: 600; }
+
+/* ---------- evidence ledger ---------- */
+
+table { border-collapse: collapse; width: 100%; font-size: 0.82rem; }
+th, td {
+  border-bottom: 1px solid var(--rule);
+  padding: 0.4rem 0.6rem 0.4rem 0;
+  text-align: left;
+}
+th {
+  font-weight: 600;
+  color: var(--slate);
+  font-size: 0.72rem;
+  text-transform: none;
+}
+.hash { font-family: var(--mono); color: var(--slate); }
+
+#manifest p { font-size: 0.85rem; color: var(--slate); line-height: 1.6; margin: 0 0 0.8rem; }
+#manifest b { color: var(--bone); }
+
+/* ---------- exhibit (diff) ---------- */
+
 .diff {
-  background: #10131a; border: 1px solid #262c38; padding: 0.8rem;
-  overflow-x: auto; font-size: 0.78rem; max-height: 300px; overflow-y: auto;
+  background: var(--panel);
+  border: 1px solid var(--rule);
+  border-left: 2px solid var(--brass-dim);
+  padding: 1rem;
+  overflow: auto;
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  line-height: 1.5;
+  max-height: 320px;
+  border-radius: 0;
 }
-table { border-collapse: collapse; font-size: 0.78rem; width: 100%; }
-td, th { border: 1px solid #262c38; padding: 0.25rem 0.5rem; text-align: left; }
-.hash { font-family: monospace; color: #6b7482; }
-#globe { width: 100%; height: 480px; background: #10131a; border: 1px solid #262c38; border-radius: 4px; }
+
+/* ---------- findings ---------- */
+
+#findings h3 {
+  font-family: var(--sans);
+  font-weight: 600;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--brass);
+  margin: 1.4rem 0 0.3rem;
+}
+#findings h3:first-child { margin-top: 0; }
+
+.findings-group {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.findings-group li {
+  padding: 0.5rem 0.2rem;
+  border-bottom: 1px solid var(--rule);
+  font-size: 0.86rem;
+  color: var(--bone);
+  cursor: pointer;
+}
+.findings-group li:hover,
+.findings-group li:focus-visible {
+  color: var(--brass);
+  outline: none;
+}
+
+#findings .empty { color: var(--slate); font-size: 0.85rem; }
+
 .node-detail {
-  margin-top: 0.6rem; white-space: pre-wrap; font-family: monospace; font-size: 0.78rem;
-  background: #1b1f27; border: 1px solid #262c38; padding: 0.6rem; min-height: 4rem; border-radius: 4px;
+  margin-top: 0.7rem;
+  white-space: pre-wrap;
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  color: var(--slate);
+  background: var(--panel);
+  border: 1px solid var(--rule);
+  padding: 0.8rem;
+  min-height: 4rem;
+  border-radius: 0;
 }
-#download { display: inline-block; margin: 0.5rem 0; }
+
+#download { display: inline-block; margin: 0.8rem 0 0; }
+
+/* ---------- responsive ---------- */
+
+@media (max-width: 860px) {
+  main { flex-direction: column; }
+  #right { position: static; width: 100%; }
+  header, #submit-panel, #case-id, main { padding-left: 1.2rem; padding-right: 1.2rem; }
+  #submit-panel { flex-direction: column; gap: 0.8rem; }
+  button { margin-left: 0; padding: 0.6rem 1.4rem; }
+}

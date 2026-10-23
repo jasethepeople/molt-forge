@@ -2,41 +2,59 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>MOLT Forge — honest repo investigation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,500;0,600;0,700;1,400;1,500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/style.css">
 </head>
 <body>
   <header>
     <h1>MOLT Forge</h1>
-    <p class="tagline">Every claim backed by execution evidence. Verdicts: validated · proposed-unverified · diagnosis-only · documented-failure</p>
+    <p class="tagline">An investigation stands or falls on what actually ran — not on what any model claims.</p>
   </header>
 
   <section id="submit-panel">
-    <input id="repo-url" type="text" placeholder="public git URL or local path, e.g. tests/fixtures/sample_repo">
-    <button id="go">Investigate</button>
+    <input id="repo-url" type="text" placeholder="git URL or local path, e.g. tests/fixtures/sample_repo" autocomplete="off">
+    <button id="go">Open investigation</button>
   </section>
+
+  <div id="case-id" hidden>Case <span id="case-id-value"></span></div>
 
   <main id="job-panel" hidden>
     <div id="left">
-      <h2>Progress</h2>
-      <ul id="steps"></ul>
+      <h2>Investigation log</h2>
+      <ol id="steps"></ol>
+
       <h2>Verdict</h2>
-      <div id="verdict" class="verdict">pending…</div>
+      <div class="verdict-block">
+        <div id="verdict" class="verdict running">pending</div>
+        <ul class="legend">
+          <li><b>validated</b> — patch applied, suite passed after it, failed before</li>
+          <li><b>proposed-unverified</b> — a patch exists; the suite didn't pass after it</li>
+          <li><b>diagnosis-only</b> — the fault was found; no patch was produced</li>
+          <li><b>documented-failure</b> — the investigation itself could not complete</li>
+        </ul>
+      </div>
       <a id="download" href="#" hidden><button>Download evidence package (.zip)</button></a>
-      <h2>Evidence inspector</h2>
-      <div id="manifest"></div>
+
       <h2>Patch</h2>
-      <pre id="diff" class="diff">(no patch yet)</pre>
+      <pre id="diff" class="diff">no patch yet</pre>
+
+      <h2>Artifacts</h2>
+      <div id="manifest"></div>
     </div>
+
     <div id="right">
-      <h2>Investigation map</h2>
-      <canvas id="globe"></canvas>
-      <div id="node-detail" class="node-detail">click a node for evidence</div>
+      <h2>Findings</h2>
+      <div id="findings"></div>
+      <h2>Evidence detail</h2>
+      <div class="node-detail" id="node-detail">select a finding to inspect its evidence</div>
     </div>
   </main>
 
-  <script src="/vendor/three.min.js"></script>
-  <script src="/globe.js"></script>
+  <script src="/graph.js"></script>
   <script src="/app.js"></script>
 </body>
 </html>

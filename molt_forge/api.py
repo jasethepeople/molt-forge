@@ -84,6 +84,29 @@ def get_package(job_id):
                      download_name=os.path.basename(job["zip_path"]))
 
 
+@app.get("/api/jobs/<job_id>/package-file")
+def get_package_file(job_id):
+    """Serve one plaintext artifact out of a job's evidence package (e.g.
+    patch.diff) for inline display. Only a bare filename directly inside
+    package_dir is allowed -- no subdirectories, no path traversal."""
+    job = JOBS.get(job_id)
+    if not job or "package_dir" not in job:
+        return jsonify({"error": "not found"}), 404
+
+    name = request.args.get("f", "")
+    # Reject anything that isn't a plain filename: no slashes, no "..".
+    if not name or name != os.path.basename(name) or name in (".", ".."):
+        return jsonify({"error": "invalid filename"}), 400
+
+    package_dir = os.path.abspath(job["package_dir"])
+    full_path = os.path.abspath(os.path.join(package_dir, name))
+    if os.path.dirname(full_path) != package_dir or not os.path.isfile(full_path):
+        return jsonify({"error": "not found"}), 404
+
+    with open(full_path, encoding="utf-8", errors="replace") as fh:
+        return fh.read(), 200, {"Content-Type": "text/plain; charset=utf-8"}
+
+
 def main():
     os.makedirs(JOBS_ROOT, exist_ok=True)
     app.run(host="127.0.0.1", port=int(os.environ.get("PORT", "5000")))
